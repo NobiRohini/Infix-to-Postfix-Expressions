@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<ctype.h>
+#define size 50
+
+void push(char ele);
+char pop();
+int priority(char symb);
+int top=-1;
+char a[size];
+int  main()
+{
+    char postfix[50],infix[50],ch;
+    char ele;
+    int i=0,k=0;
+    printf("\nenter infix expression");
+    scanf("%s",infix);
+    push('#');
+    while((ch=infix[i++])!='\0')
+    {
+        if(ch=='(')
+        {
+            push(ch);
+        }
+        else if(ch==')')
+        {
+            while(a[top]!='(')
+            {
+                postfix[k++]=pop();
+            }
+           ele=pop();
+        }
+        
+        else if(isalnum(ch))
+        {
+            postfix[k++]=ch;
+        }
+        else
+        {
+    
+    while(priority(a[top])>=priority(ch))
+    {
+        postfix[k++]=pop();
+    }
+        push(ch);
+        }
+    }
+        while(a[top]!='#')
+        {
+            postfix[k++]=pop();
+        }
+    
+        postfix[k]='\0';
+        printf("\npostfix expression =%s",postfix);
+        return 0;
+}
+void push(char ele)
+{
+    a[++top]=ele;
+    
+}
+char pop()
+{
+    return a[top--];
+}
+int priority(char symb)
+{
+    if(symb=='^')
+    return 3;
+    else if(symb=='*'||symb=='/')
+    return 2;
+    else if(symb=='+'|| symb=='-')
+    return 1;
+    else
+    return 0;
+}    
+    
